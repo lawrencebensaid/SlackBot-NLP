@@ -1,0 +1,23 @@
+{
+  "name": "slack-bot",
+  "version": "0.0.1",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "start": "node ./main.js"
+  },
+  "keywords": [
+    "Tinka",
+    "Slack",
+    "Slack Bot"
+  ],
+  "author": {
+    "name": "Lawrence Bensaid",
+    "email": "lawrencebensaid@icloud.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@slack/bolt": "^3.4.0",
+    "dotenv": "^10.0.0"
+  }
+}

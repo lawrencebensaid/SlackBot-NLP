@@ -1,0 +1,24 @@
+{
+  "intents": [
+    {
+      "topic": "greetings",
+      "patterns": ["good afternoon", "good morning", "hello", "hey", "hi", "how are you doing"],
+      "responses": ["How can I be of service? 😄", "Hello", "Hello there", "Hello!", "Hey", "Hi"]
+    },
+    {
+      "topic": "goodbye",
+      "patterns": ["bye", "goodbye", "see you later"],
+      "responses": ["Bye", "Goodbye", "Goodbye!"]
+    },
+    {
+      "topic": "colors",
+      "patterns": ["color", "colour", "style", "design", "standard"],
+      "responses": ["#ffde80, #584c9f & #90bae2"]
+    },
+    {
+      "topic": "corevalues",
+      "patterns": ["core values"],
+      "responses": ["Fair, transparent and responsible"]
+    }
+  ]
+}
