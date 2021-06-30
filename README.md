@@ -2,6 +2,13 @@
 
 This is an example of a Slack bot powered by a NLP Tensorflow neural network.
 
+## .env example
+
+```
+SLACK_BOT_TOKEN=xoxb-#############-#############-xxxxxxxxxxxxxxxxxxxxxxxx
+SLACK_SIGNING_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
 ## Technical notes
 
 ### Intents
