@@ -1,7 +1,7 @@
 {
   "name": "slack-bot",
   "version": "0.1.0",
-  "description": "",
+  "description": "This is an example of a Slack bot powered by a NLP Tensorflow neural network.",
   "repository": "http://github.com/lawrencebensaid/SlackBot-NLP",
   "type": "module",
   "scripts": {
@@ -18,10 +18,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@slack/bolt": "^3.4.0",
-    "@tensorflow/tfjs": "^3.7.0",
-    "@tensorflow/tfjs-node": "^3.7.0",
     "dotenv": "^10.0.0",
-    "python-shell": "^3.0.0"
+    "@slack/bolt": "^3.4.0"
   }
 }

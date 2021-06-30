@@ -4,9 +4,6 @@ import { config } from "dotenv"
 import bolt from "@slack/bolt"
 import { spawn } from "child_process"
 
-// import * as tf from "@tensorflow/tfjs"
-// import * as tfn from "@tensorflow/tfjs-node"
-
 const { App } = bolt;
 config();
 global.print = console.log;
@@ -35,8 +32,10 @@ child.stdout.on("data", (chunk) => {
 
 (async () => {
 
-  await app.start({ host: "0.0.0.0", port: 3000 });
-  print("Slack bot running");
+  const HOST = "0.0.0.0";
+  const PORT = 3000;
+  await app.start({ port: PORT });
+  print(`Slack bot running on ${HOST}:${PORT}`);
 
   app.event("app_mention", ({ event, say }) => {
     app.command("")
