@@ -2,9 +2,14 @@
 
 import { config } from "dotenv"
 import bolt from "@slack/bolt"
+import { spawn } from "child_process"
+
+// import * as tf from "@tensorflow/tfjs"
+// import * as tfn from "@tensorflow/tfjs-node"
 
 const { App } = bolt;
 config();
+global.print = console.log;
 
 const {
   SLACK_BOT_TOKEN,
@@ -21,49 +26,28 @@ const app = new App({
   token: SLACK_BOT_TOKEN,
 });
 
+var child = spawn("python", ["bot.py"]);
+
+child.stdout.on("data", (chunk) => {
+  var data = chunk.toString("utf8");
+  print(data);
+});
+
 (async () => {
 
   await app.start({ host: "0.0.0.0", port: 3000 });
-  app.presen
-  console.log("Slack bot running");
+  print("Slack bot running");
 
   app.event("app_mention", ({ event, say }) => {
     app.command("")
-    console.log("app_mention", event);
+    print("app_mention", event);
     say(`Hi, <@${event.user}>! 😄`);
   });
 
   app.event("message", ({ event, say }) => {
     if (event.channel_type !== "im") return;
-    console.log("message", event);
-    const query = event.text;
-    if (query.includes("?")) { // Is question
-      if (query.match(/.*(?:what is the answer to|wat is het antwoord op).*(?:everything|universe|alles|universum).*/gmi)) {
-        say(`It's 42!`);
-        return;
-      }
-      if (query.match(/.*(?:what are|wat zijn).*(?:core value).*/gmi)) {
-        say(`Our core values are ${db.coreValues}.`);
-        say(`Hope that helped! 😄`);
-        return;
-      }
-      if (query.match(/.*(?:what are|wat zijn).*(?:company colors).*/gmi)) {
-        say(`Our company colors are ${db.colors.map(x => `#${x}`).join(", ")}.`);
-        say(`Hope that helped! 😄`);
-        return;
-      }
-      if (query.match(/.*(?:how are you|hoe gaat het).*/gmi)) {
-        say(`I'm doing great!`);
-        return;
-      }
-      say(`Ehm, I don't know that one. Sorry... 😕`);
-      return;
-    }
-    if (query.match(/.*(?:hallo|hello|hey|hi|hoi).*/gmi)) {
-      say(`Hi, <@${event.user}>! 😄`);
-      return;
-    }
-    say(`Ehh, what was that? 🥴`);
+    print("message", event);
+    child.stdin.write(`${event.text}\n`);
   });
 
 })();

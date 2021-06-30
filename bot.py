@@ -9,9 +9,9 @@ from tensorflow.keras.models import load_model
 lemmatizer = WordNetLemmatizer()
 intents = json.loads(open('input/intents.json').read())
 
-words = pickle.load(open('./output/words.pk1', 'rb'))
-topics = pickle.load(open('./output/topics.pk1', 'rb'))
-model = load_model('./output/SlackBotNLP.h5')
+words = pickle.load(open('output/words.pk1', 'rb'))
+topics = pickle.load(open('output/topics.pk1', 'rb'))
+model = load_model('output/SlackBotNLP.h5')
 
 def clean_up_sentence(sentence):
     sentence_words = nltk.word_tokenize(sentence)
