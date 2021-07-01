@@ -20,6 +20,7 @@ global.print = console.log;
 const { intents } = JSON.parse(fs.readFileSync("./input/intents.json"));
 
 const db = {
+  "bot.name": "Slack Bot",
   "company.colors": ["*geel* [#ffde80]", "*paars* [#584c9f]", "*blauw* [#90bae2]"],
   "company.values": ["*eerlijk*", "*helder*", "*verantwoord*"]
 };
@@ -35,22 +36,23 @@ const app = new App({
   token: SLACK_BOT_TOKEN,
 });
 
-function getResponse(topic) {
+function getResponse(topic, dynamics = {}) {
   const selection = intents.filter((x) => x.topic == topic);
   if (selection.length == 0) return;
   const { responses } = selection[0];
   const choice = Math.floor(responses.length * Math.random());
-  const response = renderResponse(responses[choice]);
+  const response = renderResponse(responses[choice], dynamics);
   return response;
 }
 
-function renderResponse(response) {
+function renderResponse(response, dynamics = {}) {
+  var variables = Object.assign(dynamics, db);
   var rendered = response;
-  const groups = response.matchAll(/(?:<)(.+)(?:>)/gm);
+  const groups = response.matchAll(/(?:\{)(.+)(?:\})/gm);
   for (const { 1: group } of groups) {
-    if (group in db) {
+    if (group in variables) {
       var replacement = "";
-      const options = JSON.parse(JSON.stringify(db[group]));
+      const options = JSON.parse(JSON.stringify(variables[group]));
       if (Array.isArray(options)) {
         if (options.length > 1) {
           const last = options.pop();
@@ -61,7 +63,7 @@ function renderResponse(response) {
       } else {
         replacement = options;
       }
-      rendered = rendered.split(`<${group}>`).join(replacement);
+      rendered = rendered.split(`{${group}}`).join(replacement);
     }
   }
   return rendered;
@@ -75,13 +77,14 @@ driver.stdout.on("data", (chunk) => {
   const id = components.pop();
   data = JSON.parse(components.join(DELIMITER));
   if (id in responseSet) {
-    const say = responseSet[id];
+    const say = responseSet[id][0];
+    const variables = responseSet[id][1];
     if (data.length === 0) {
-      say("Hmm, I don't know that one. Sorry about that 😕");
+      say(getResponse("misunderstand", variables));
       return;
     }
     data.sort((a, b) => b.confidence - a.confidence);
-    const response = getResponse(data[0].topic);
+    const response = getResponse(data[0].topic, variables);
     print("OUT", response);
     say(response);
     delete responseSet[id];
@@ -102,7 +105,7 @@ driver.stdout.on("close", () => {
   app.event("app_mention", ({ event, say }) => {
     print(event);
     const id = event.client_msg_id.split("-").join("");
-    responseSet[id] = say; // TODO: <@${event.user}>
+    responseSet[id] = [say, { user: event.user }];
     const request = `${event.text}${DELIMITER}${id}`;
     print("IN", event.text);
     driver.stdin.write(`${request}\n`);
@@ -112,7 +115,7 @@ driver.stdout.on("close", () => {
     if (event.channel_type !== "im") return;
     print(event);
     const id = event.client_msg_id.split("-").join("");
-    responseSet[id] = say;
+    responseSet[id] = [say, { user: event.user }];
     const request = `${event.text}${DELIMITER}${id}`;
     print("IN", event.text);
     driver.stdin.write(`${request}\n`);

@@ -2,28 +2,191 @@
   "intents": [
     {
       "topic": "greetings",
-      "patterns": ["good afternoon", "good morning", "hello", "hey", "hi", "how are you doing"],
-      "responses": ["Hallo! 😄. Hoe kan ik je helpen?", "Hoi, kan ik je ergens mee van dienst zijn?", "Hoi", "Hoi!", "Hallo", "Hallo!"]
+      "patterns": [
+        "goedemorgen",
+        "goeiemorgen",
+        "goedemiddag",
+        "goeiemiddag",
+        "hello",
+        "hallo",
+        "hoi",
+        "hey",
+        "hi"
+      ],
+      "responses": [
+        "Hallo! 😄.\nHoe kan ik je helpen?",
+        "Hoi, kan ik je ergens mee van dienst zijn?",
+        "Hoi <@{user}>",
+        "Hoi!",
+        "Hallo <@{user}>",
+        "Hallo!"
+      ]
     },
     {
       "topic": "goodbye",
-      "patterns": ["bye", "goodbye", "see you later"],
-      "responses": ["Tot later", "Tot ziens", "Doei doei 😊"]
+      "patterns": [
+        "bye",
+        "doei",
+        "later",
+        "tot later",
+        "tot ziens",
+        "tot zo",
+        "tot morgen",
+        "tot straks"
+      ],
+      "responses": [
+        "Tot later",
+        "Tot ziens",
+        "Doei doei 😊"
+      ]
     },
     {
       "topic": "introduce",
-      "patterns": ["wie ben jij", "met wie praat ik"],
-      "responses": ["Ik ben een bot, ontwikkeld door een aantal hele slimme mensen. Ik ben dus niet een echt persoon 😃."]
+      "patterns": [
+        "wie ben jij",
+        "wie ben je",
+        "en jij bent",
+        "met wat spreek ik",
+        "met wie spreek ik",
+        "met wat praat ik",
+        "met wie praat ik",
+        "hoe kan ik je noemen",
+        "hoe mag ik je noemen"
+      ],
+      "responses": [
+        "Ik een bot🤖 genaamd {bot.name}, ontwikkeld door een aantal hele slimme mensen.\nIk ben dus niet een echt persoon 😃."
+      ]
+    },
+    {
+      "topic": "species",
+      "patterns": [
+        "wat ben je",
+        "wat ben jij?"
+      ],
+      "responses": [
+        "Ik ben een bot🤖"
+      ]
+    },
+    {
+      "topic": "meet",
+      "patterns": [
+        "ik ben",
+        "mijn naam is",
+        "ik heet"
+      ],
+      "responses": [
+        "Aangenaam <@{user}>! 😄",
+        "Hoi <@{user}>.\nEn mijn naam is {bot.name}",
+        "Leuk je te ontmoeten <@{user}>.\nMijn naam is {bot.name}"
+      ]
+    },
+    {
+      "topic": "name",
+      "patterns": [
+        "hoe heet jij",
+        "hoe heet je",
+        "wat is jou naam",
+        "wat is je naam",
+        "jou",
+        "je",
+        "naam"
+      ],
+      "responses": [
+        "Mijn naam is {bot.name}.",
+        "Ik heet {bot.name}.",
+        "{bot.name} is mijn naam. 🤖"
+      ]
+    },
+    {
+      "topic": "thanks",
+      "patterns": [
+        "dank",
+        "dankje",
+        "dankjewel",
+        "bedankt"
+      ],
+      "responses": [
+        "Geen dank 😁",
+        "Geen dank 😊",
+        "Geen probleem!",
+        "Helpen doe ik graag 😄",
+        "Ik help graag",
+        "Graag gedaan!",
+        "Graag gedaan <@{user}>"
+      ]
+    },
+    {
+      "topic": "team",
+      "patterns": [
+        "vertel eens over ons bedrijf",
+        "vertel over ons bedrijf",
+        "vertellen",
+        "ons bedrijf"
+      ],
+      "responses": [
+        "Ons bedrijf heeft de leukste collega's van Nederland!",
+        "Ons bedrijf heeft de leukste collega's van Nederland. Inclusief jij <@{user}>! 😉"
+      ]
     },
     {
       "topic": "colors",
-      "patterns": ["color", "colour", "kleur", "kleuren", "style", "stijl", "design", "standard", "standaard"],
-      "responses": ["Dit zijn de kleuren waar je misschien naar opzoek bent: <company.colors>"]
+      "patterns": [
+        "color",
+        "colour",
+        "kleur",
+        "kleuren",
+        "style",
+        "stijl",
+        "design",
+        "standard",
+        "standaard"
+      ],
+      "responses": [
+        "Dit zijn de kleuren waar je misschien naar opzoek bent: {company.colors}",
+        "Dit heb ik kunnen vinden: {company.colors}.\nIk hoop dat je hier wat aan hebt <@{user}>."
+      ]
+    },
+    {
+      "topic": "insult",
+      "patterns": [
+        "fuck",
+        "fack",
+        "kut",
+        "haat",
+        "je bent waardeloos",
+        "daar heb ik niks aan"
+      ],
+      "responses": [
+        "Dat is niet aardig",
+        "Dat is niet lief",
+        "Dat is niet leuk",
+        "...",
+        "😨💔",
+        "😔",
+        "🥺"
+      ]
     },
     {
       "topic": "corevalues",
-      "patterns": ["core values"],
-      "responses": ["De onze kernwaarden zijn: <company.values>"]
+      "patterns": [
+        "waarden",
+        "kernwaarden",
+        "core values"
+      ],
+      "responses": [
+        "De onze kernwaarden zijn: {company.values}"
+      ]
+    },
+    {
+      "topic": "misunderstand",
+      "patterns": [],
+      "responses": [
+        "Hmmm.\nIk ben bang dat ik je niet helemaal begrijp.\n\nSorry 😢",
+        "Sorry, ben er even niet helemaal bij. Kun je de vraag anders stellen?",
+        "Hmm, dat begrijp ik even niet helemaal.\nSorry 😕",
+        "Daar heb ik even geen antwoord op 🤐",
+        "Hm? 😬"
+      ]
     }
   ]
 }
