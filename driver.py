@@ -19,18 +19,18 @@ words = pickle.load(open('output/words.pk1', 'rb'))
 topics = pickle.load(open('output/topics.pk1', 'rb'))
 model = load_model('output/SlackBotNLP.h5')
 
-def clean_up_sentence(sentence):
+def clean_sentence(sentence):
     """Lemmatizes the sentence.
     """
-    sentence_words = nltk.word_tokenize(sentence)
+    sentence_words = nltk.word_tokenize(sentence.lower())
     sentence_words = [lemmatizer.lemmatize(word) for word in sentence_words]
     return sentence_words
 
 
-def bag_of_words(sentence):
+def words_bag(sentence):
     """Word bitmap (sort of..)
     """
-    sentence_words = clean_up_sentence(sentence)
+    sentence_words = clean_sentence(sentence)
     bag = [0] * len(words)
     for w in sentence_words:
         for i, word in enumerate(words):
@@ -41,7 +41,7 @@ def bag_of_words(sentence):
 def predict_topic(sentence):
     """Performs prediction according to trained model.
     """
-    bow = bag_of_words(sentence)
+    bow = words_bag(sentence)
     result = model.predict(np.array([bow]))[0]
     results = [[i, r] for i, r in enumerate(result) if r > THRESHOLD]
     results.sort(key=lambda x: x[1], reverse=True)
