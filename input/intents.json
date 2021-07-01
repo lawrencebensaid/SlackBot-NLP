@@ -13,7 +13,7 @@
     {
       "topic": "colors",
       "patterns": ["color", "colour", "style", "design", "standard"],
-      "responses": ["#ffde80, #584c9f & #90bae2"]
+      "responses": ["These are the colors: Yellow (#ffde80), Purple (#584c9f) and blue (#90bae2)"]
     },
     {
       "topic": "corevalues",

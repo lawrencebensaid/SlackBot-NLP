@@ -15,12 +15,16 @@ WORKDIR /app
 # RUN apt install -y build-essential libssl-dev libffi-dev python3-dev
 
 # RUN pip install numpy
+
+RUN apt update
+RUN apt -y install curl dirmngr apt-transport-https lsb-release ca-certificates
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+RUN apt -y install nodejs
+RUN apt -y install gcc g++ make
+
 RUN pip install nltk
 RUN python -m nltk.downloader punkt
 RUN python -m nltk.downloader wordnet
-
-RUN apt update
-RUN apt install -y nodejs npm
 
 RUN npm i
 
