@@ -14,6 +14,7 @@ const {
 const HOST = process.env.HOST || "0.0.0.0";
 const PORT = process.env.PORT || 3000;
 const DELIMITER = process.env.DELIMITER || "§";
+const MISSES_LOG_FILE = process.env.MISSES_LOG_FILE || "./misunderstandings.log";
 
 global.print = console.log;
 
@@ -78,13 +79,19 @@ driver.stdout.on("data", (chunk) => {
   data = JSON.parse(components.join(DELIMITER));
   if (id in responseSet) {
     const say = responseSet[id][0];
-    const variables = responseSet[id][1];
+    const dynamics = responseSet[id][1];
     if (data.length === 0) {
-      say(getResponse("misunderstand", variables));
+      say(getResponse("misunderstand", dynamics));
+      var misses = "";
+      if (fs.existsSync(MISSES_LOG_FILE)) {
+        misses = fs.readFileSync(MISSES_LOG_FILE);
+      }
+      misses += `[${new Date().toISOString()}] ${dynamics.text}\n`;
+      fs.writeFileSync(MISSES_LOG_FILE, misses);
       return;
     }
     data.sort((a, b) => b.confidence - a.confidence);
-    const response = getResponse(data[0].topic, variables);
+    const response = getResponse(data[0].topic, dynamics);
     print("OUT", response);
     say(response);
     delete responseSet[id];
@@ -105,7 +112,7 @@ driver.stdout.on("close", () => {
   app.event("app_mention", ({ event, say }) => {
     print(event);
     const id = event.client_msg_id.split("-").join("");
-    responseSet[id] = [say, { user: event.user }];
+    responseSet[id] = [say, { text: event.text, user: event.user }];
     const request = `${event.text}${DELIMITER}${id}`;
     print("IN", event.text);
     driver.stdin.write(`${request}\n`);
@@ -115,7 +122,7 @@ driver.stdout.on("close", () => {
     if (event.channel_type !== "im") return;
     print(event);
     const id = event.client_msg_id.split("-").join("");
-    responseSet[id] = [say, { user: event.user }];
+    responseSet[id] = [say, { text: event.text, user: event.user }];
     const request = `${event.text}${DELIMITER}${id}`;
     print("IN", event.text);
     driver.stdin.write(`${request}\n`);
