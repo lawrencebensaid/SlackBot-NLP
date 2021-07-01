@@ -23,6 +23,7 @@ RUN apt -y install nodejs
 RUN apt -y install gcc g++ make
 
 RUN pip install nltk
+RUN pip install python-dotenv
 RUN python -m nltk.downloader punkt
 RUN python -m nltk.downloader wordnet
 

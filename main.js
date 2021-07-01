@@ -5,33 +5,35 @@ import { config } from "dotenv"
 import bolt from "@slack/bolt"
 import fs from "fs"
 
-const { App } = bolt;
 config();
-global.print = console.log;
 
 const {
-  HOST,
-  PORT,
   SLACK_BOT_TOKEN,
   SLACK_SIGNING_SECRET
 } = process.env;
-const DELIMITER = "§";
+const HOST = process.env.HOST || "0.0.0.0";
+const PORT = process.env.PORT || 3000;
+const DELIMITER = process.env.DELIMITER || "§";
+
+global.print = console.log;
+
+const { intents } = JSON.parse(fs.readFileSync("./input/intents.json"));
+
+const db = {
+  "company.colors": ["*geel* [#ffde80]", "*paars* [#584c9f]", "*blauw* [#90bae2]"],
+  "company.values": ["*eerlijk*", "*helder*", "*verantwoord*"]
+};
+
+const responseSet = {};
+
+var driver = spawn("python", ["driver.py"]);
+
+const { App } = bolt;
 
 const app = new App({
   signingSecret: SLACK_SIGNING_SECRET,
   token: SLACK_BOT_TOKEN,
 });
-
-const { intents } = JSON.parse(fs.readFileSync("./input/intents.json"));
-
-const options = {
-  "company.colors": ["*geel* [#ffde80]", "*paars* [#584c9f]", "*blauw* [#90bae2]"],
-  "company.values": ["*eerlijk*", "*helder*", "*verantwoord*"]
-};
-
-var driver = spawn("python", ["driver.py"]);
-
-const responseSet = {};
 
 function getResponse(topic) {
   const selection = intents.filter((x) => x.topic == topic);
@@ -46,17 +48,18 @@ function renderResponse(response) {
   var rendered = response;
   const groups = response.matchAll(/(?:<)(.+)(?:>)/gm);
   for (const { 1: group } of groups) {
-    if (group in options) {
+    if (group in db) {
       var replacement = "";
-      if (Array.isArray(options[group])) {
-        if (options[group].length > 1) {
-          const last = options[group].pop();
-          replacement = `${options[group].join(", ")} en ${last}`;
-        } else if (options[group].length > 0) {
-          replacement = options[group][0];
+      const options = JSON.parse(JSON.stringify(db[group]));
+      if (Array.isArray(options)) {
+        if (options.length > 1) {
+          const last = options.pop();
+          replacement = `${options.join(", ")} en ${last}`;
+        } else if (options.length > 0) {
+          replacement = options[0];
         }
       } else {
-        replacement = options[group];
+        replacement = options;
       }
       rendered = rendered.split(`<${group}>`).join(replacement);
     }

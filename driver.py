@@ -5,15 +5,19 @@ import numpy as np
 import nltk
 from nltk.stem import WordNetLemmatizer
 from tensorflow.keras.models import load_model
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+THRESHOLD = float(os.environ['THRESHOLD']) if 'THRESHOLD' in os.environ else .75
+DELIMITER = os.environ['DELIMITER'] if 'DELIMITER' in os.environ else '§'
 
 lemmatizer = WordNetLemmatizer()
 
 words = pickle.load(open('output/words.pk1', 'rb'))
 topics = pickle.load(open('output/topics.pk1', 'rb'))
 model = load_model('output/SlackBotNLP.h5')
-
-THRESHOLD = .8
-DELIMITER = '§'
 
 def clean_up_sentence(sentence):
     """Lemmatizes the sentence.
@@ -32,7 +36,6 @@ def bag_of_words(sentence):
         for i, word in enumerate(words):
             if word == w:
                 bag[i] = 1
-    print(bag);
     return np.array(bag)
 
 def predict_topic(sentence):
