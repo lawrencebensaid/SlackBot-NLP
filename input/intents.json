@@ -3,22 +3,27 @@
     {
       "topic": "greetings",
       "patterns": ["good afternoon", "good morning", "hello", "hey", "hi", "how are you doing"],
-      "responses": ["How can I be of service? 😄", "Hello", "Hello there", "Hello!", "Hey", "Hi"]
+      "responses": ["Hallo! 😄. Hoe kan ik je helpen?", "Hoi, kan ik je ergens mee van dienst zijn?", "Hoi", "Hoi!", "Hallo", "Hallo!"]
     },
     {
       "topic": "goodbye",
       "patterns": ["bye", "goodbye", "see you later"],
-      "responses": ["Bye", "Goodbye", "Goodbye!"]
+      "responses": ["Tot later", "Tot ziens", "Doei doei 😊"]
+    },
+    {
+      "topic": "introduce",
+      "patterns": ["wie ben jij", "met wie praat ik"],
+      "responses": ["Ik ben een bot, ontwikkeld door een aantal hele slimme mensen. Ik ben dus niet een echt persoon 😃."]
     },
     {
       "topic": "colors",
-      "patterns": ["color", "colour", "style", "design", "standard"],
-      "responses": ["These are the colors: Yellow (#ffde80), Purple (#584c9f) and blue (#90bae2)"]
+      "patterns": ["color", "colour", "kleur", "kleuren", "style", "stijl", "design", "standard", "standaard"],
+      "responses": ["Dit zijn de kleuren waar je misschien naar opzoek bent: <company.colors>"]
     },
     {
       "topic": "corevalues",
       "patterns": ["core values"],
-      "responses": ["Fair, transparent and responsible"]
+      "responses": ["De onze kernwaarden zijn: <company.values>"]
     }
   ]
 }

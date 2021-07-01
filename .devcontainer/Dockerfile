@@ -26,5 +26,3 @@ RUN pip install nltk
 RUN pip install tensorflow
 RUN python -m nltk.downloader punkt
 RUN python -m nltk.downloader wordnet
-
-EXPOSE 3000
